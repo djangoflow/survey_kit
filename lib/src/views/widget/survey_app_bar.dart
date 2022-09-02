@@ -46,6 +46,8 @@ class SurveyAppBar extends StatelessWidget {
               context: context,
             ),
           ),
+        if (appBarConfiguration.addtionalTrailingButtons != null)
+          ...appBarConfiguration.addtionalTrailingButtons!,
       ],
     );
   }
