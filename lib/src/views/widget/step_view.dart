@@ -43,8 +43,8 @@ class StepView extends StatelessWidget {
                   child: title,
                 ),
                 child,
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 32.0),
+                SizedBox(
+                  width: double.infinity,
                   child: OutlinedButton(
                     onPressed: isValid || step.isOptional
                         ? () => [
