@@ -17,7 +17,9 @@ class SurveyAppBar extends StatelessWidget {
   AppBar build(BuildContext context) {
     final _showProgress =
         appBarConfiguration.showProgress ?? context.read<bool>();
-    final _canGoBack = appBarConfiguration.canBack ?? true;
+    final _canGoBack = appBarConfiguration.canBack ??
+        appBarConfiguration.showCancelButton ??
+        true;
 
     final surveyController = controller ?? context.read<SurveyController>();
     return AppBar(
