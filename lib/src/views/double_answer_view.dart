@@ -32,7 +32,9 @@ class _DoubleAnswerViewState extends State<DoubleAnswerView> {
     _doubleAnswerFormat =
         widget.questionStep.answerFormat as DoubleAnswerFormat;
     _controller = TextEditingController();
-    _controller.text = widget.result?.result?.toString() ?? '';
+    _controller.text = widget.result?.result?.toString() ??
+        _doubleAnswerFormat.defaultValue?.toString() ??
+        '';
     _checkValidation(_controller.text);
     _startDate = DateTime.now();
   }

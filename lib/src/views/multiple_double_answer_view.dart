@@ -39,7 +39,9 @@ class _MultipleDoubleAnswerViewState extends State<MultipleDoubleAnswerView> {
 
     _controller.forEach((element) {
       element = TextEditingController();
-      element.text = widget.result?.result?.toString() ?? '';
+      element.text = widget.result?.result?.toString() ??
+          _multipleDoubleAnswer.defaultValues?.toString() ??
+          '';
       _checkValidation(element.text);
     });
 

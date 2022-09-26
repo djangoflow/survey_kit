@@ -32,7 +32,9 @@ class _IntegerAnswerViewState extends State<IntegerAnswerView> {
     _integerAnswerFormat =
         widget.questionStep.answerFormat as IntegerAnswerFormat;
     _controller = TextEditingController();
-    _controller.text = widget.result?.result?.toString() ?? '';
+    _controller.text = widget.result?.result?.toString() ??
+        _integerAnswerFormat.defaultValue?.toString() ??
+        '';
     _checkValidation(_controller.text);
     _startDate = DateTime.now();
   }
