@@ -81,10 +81,12 @@
             },
             "type": "question",
             "title": "How old are you?",
+            "text": "This is text",
             "answerFormat": {
                 "type": "integer",
                 "defaultValue": 25,
-                "hint": "Please enter your age"
+                "hint": "Please enter your age",
+                "suffixText": "years"
             }
         },
         {
