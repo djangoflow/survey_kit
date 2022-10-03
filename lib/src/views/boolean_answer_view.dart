@@ -56,7 +56,9 @@ class _BooleanAnswerViewState extends State<BooleanAnswerView> {
               textAlign: TextAlign.center,
             )
           : widget.questionStep.content,
-      isValid: widget.questionStep.isOptional || _result != null,
+      isValid: widget.questionStep.isOptional ||
+          _result != null ||
+          (_answerFormat.required && _result != BooleanResult.NONE),
       child: Column(
         children: [
           Padding(
