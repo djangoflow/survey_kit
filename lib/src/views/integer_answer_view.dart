@@ -72,22 +72,34 @@ class _IntegerAnswerViewState extends State<IntegerAnswerView> {
               textAlign: TextAlign.center,
             )
           : widget.questionStep.content,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 32.0),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: TextField(
-            decoration: textFieldInputDecoration(
-              hint: _integerAnswerFormat.hint,
+      child: Column(
+        children: [
+          if (widget.questionStep.text.isNotEmpty)
+            Padding(
+              padding:
+                  const EdgeInsets.only(bottom: 32.0, left: 14.0, right: 14.0),
+              child: Text(
+                widget.questionStep.text,
+                style: Theme.of(context).textTheme.bodyText2,
+                textAlign: TextAlign.center,
+              ),
             ),
-            controller: _controller,
-            onChanged: (String value) {
-              _checkValidation(value);
-            },
-            keyboardType: TextInputType.number,
-            textAlign: TextAlign.center,
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: TextField(
+              decoration: textFieldInputDecoration(
+                hint: _integerAnswerFormat.hint,
+                suffixText: _integerAnswerFormat.suffixText,
+              ),
+              controller: _controller,
+              onChanged: (String value) {
+                _checkValidation(value);
+              },
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
