@@ -9,11 +9,13 @@ class BooleanAnswerFormat implements AnswerFormat {
   final String negativeAnswer;
   final BooleanResult result;
   final BooleanResult? defaultValue;
+  final bool required;
 
   const BooleanAnswerFormat({
     required this.positiveAnswer,
     required this.negativeAnswer,
     this.result = BooleanResult.NONE,
+    this.required = false,
     this.defaultValue,
   }) : super();
 
