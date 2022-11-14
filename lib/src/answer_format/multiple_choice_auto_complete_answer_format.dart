@@ -13,12 +13,15 @@ class MultipleChoiceAutoCompleteAnswerFormat implements AnswerFormat {
   final List<TextChoice> suggestions;
   @JsonKey(defaultValue: false)
   final bool otherField;
+  @JsonKey()
+  final int? selectionLimit;
 
   const MultipleChoiceAutoCompleteAnswerFormat({
     required this.textChoices,
     this.defaultSelection = const [],
     this.suggestions = const [],
     this.otherField = false,
+    this.selectionLimit,
   }) : super();
 
   factory MultipleChoiceAutoCompleteAnswerFormat.fromJson(

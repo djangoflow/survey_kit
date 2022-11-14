@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:survey_kit/src/answer_format/multiple_choice_answer_format.dart';
 import 'package:survey_kit/src/answer_format/text_choice.dart';
+import 'package:survey_kit/src/utils/max_selection.dart';
 import 'package:survey_kit/src/views/widget/selection_list_tile.dart';
 import 'package:survey_kit/src/result/question/multiple_choice_question_result.dart';
 import 'package:survey_kit/src/steps/predefined_steps/question_step.dart';
@@ -49,7 +50,12 @@ class _MultipleChoiceAnswerView extends State<MultipleChoiceAnswerView> {
             _selectedChoices.map((choices) => choices.value).join(','),
         result: _selectedChoices,
       ),
-      isValid: widget.questionStep.isOptional || _selectedChoices.isNotEmpty,
+      isValid: widget.questionStep.isOptional ||
+          _selectedChoices.isNotEmpty &&
+              MaxSelectionUtility.isSelectionWithinRange(
+                limit: _multipleChoiceAnswer.selectionLimit,
+                currentlySelected: _selectedChoices.length,
+              ),
       title: widget.questionStep.title.isNotEmpty
           ? Text(
               widget.questionStep.title,
@@ -84,7 +90,12 @@ class _MultipleChoiceAnswerView extends State<MultipleChoiceAnswerView> {
                               if (_selectedChoices.contains(tc)) {
                                 _selectedChoices.remove(tc);
                               } else {
-                                _selectedChoices = [..._selectedChoices, tc];
+                                if (!MaxSelectionUtility.hasReachedMaxSelection(
+                                  currentlySelected: _selectedChoices.length,
+                                  limit: _multipleChoiceAnswer.selectionLimit,
+                                )) {
+                                  _selectedChoices = [..._selectedChoices, tc];
+                                }
                               }
                             },
                           );
