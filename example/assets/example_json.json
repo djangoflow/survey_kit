@@ -141,6 +141,7 @@
             "title": "Known allergies",
             "answerFormat": {
                 "type": "multiple",
+                "selectionLimit": 1,
                 "textChoices": [{
                         "text": "Penicillin",
                         "value": "Penicillin"
