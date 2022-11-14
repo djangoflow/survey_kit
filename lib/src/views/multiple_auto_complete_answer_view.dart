@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:survey_kit/src/answer_format/multiple_choice_auto_complete_answer_format.dart';
+import 'package:survey_kit/src/utils/max_selection.dart';
 import 'package:survey_kit/survey_kit.dart';
 
 class MultipleChoiceAutoCompleteAnswerView extends StatefulWidget {
@@ -47,7 +48,12 @@ class _MultipleChoiceAutoCompleteAnswerViewState
             _selectedChoices.map((choices) => choices.value).join(','),
         result: _selectedChoices,
       ),
-      isValid: widget.questionStep.isOptional || _selectedChoices.isNotEmpty,
+      isValid: widget.questionStep.isOptional ||
+          _selectedChoices.isNotEmpty &&
+              MaxSelectionUtility.isSelectionWithinRange(
+                limit: _multipleChoiceAnswer.selectionLimit,
+                currentlySelected: _selectedChoices.length,
+              ),
       title: widget.questionStep.title.isNotEmpty
           ? Text(
               widget.questionStep.title,
@@ -124,7 +130,11 @@ class _MultipleChoiceAutoCompleteAnswerViewState
                             } else if (v.isNotEmpty) {
                               final updatedTextChoice =
                                   TextChoice(text: 'Other', value: v);
-                              if (otherTextChoice == null) {
+                              if (otherTextChoice == null &&
+                                  !MaxSelectionUtility.hasReachedMaxSelection(
+                                    currentlySelected: _selectedChoices.length,
+                                    limit: _multipleChoiceAnswer.selectionLimit,
+                                  )) {
                                 _selectedChoices.add(updatedTextChoice);
                               } else if (currentIndex != null) {
                                 _selectedChoices[currentIndex!] =
@@ -160,7 +170,12 @@ class _MultipleChoiceAutoCompleteAnswerViewState
         if (_selectedChoices.contains(tc)) {
           _selectedChoices.remove(tc);
         } else {
-          _selectedChoices = [..._selectedChoices, tc];
+          if (!MaxSelectionUtility.hasReachedMaxSelection(
+            currentlySelected: _selectedChoices.length,
+            limit: _multipleChoiceAnswer.selectionLimit,
+          )) {
+            _selectedChoices = [..._selectedChoices, tc];
+          }
         }
       },
     );

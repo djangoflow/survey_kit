@@ -22,6 +22,7 @@ MultipleChoiceAutoCompleteAnswerFormat
                   .toList() ??
               [],
           otherField: json['otherField'] as bool? ?? false,
+          selectionLimit: json['selectionLimit'] as int?,
         );
 
 Map<String, dynamic> _$MultipleChoiceAutoCompleteAnswerFormatToJson(
@@ -31,4 +32,5 @@ Map<String, dynamic> _$MultipleChoiceAutoCompleteAnswerFormatToJson(
       'defaultSelection': instance.defaultSelection,
       'suggestions': instance.suggestions,
       'otherField': instance.otherField,
+      'selectionLimit': instance.selectionLimit,
     };
