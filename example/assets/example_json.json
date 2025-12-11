@@ -63,6 +63,15 @@
         },
         {
             "stepIdentifier": {
+                "id": "122"
+            },
+            "type": "custom",
+            "title": "Welcome to the\nQuickBird Studios\nHealth Survey",
+            "text": "Get ready for a bunch of super random questions!",
+            "buttonText": "Let's go!"
+        },
+        {
+            "stepIdentifier": {
                 "id": "14"
             },
             "type": "question",

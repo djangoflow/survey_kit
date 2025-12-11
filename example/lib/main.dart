@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide Step;
 import 'package:flutter/services.dart';
 import 'package:survey_kit/survey_kit.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'main.g.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -295,7 +297,127 @@ class _MyAppState extends State<MyApp> {
 
       return Task.fromJson(taskMap);
     } catch (e) {
+      print(e);
       rethrow;
     }
+  }
+}
+
+class CustomResult extends QuestionResult<String> {
+  CustomResult({
+    required Identifier? id,
+    required DateTime startDate,
+    required DateTime endDate,
+    required String? valueIdentifier,
+    required String? result,
+    required this.customData,
+    required this.value,
+  }) : super(
+          id: id,
+          startDate: startDate,
+          endDate: endDate,
+          valueIdentifier: valueIdentifier,
+          result: result,
+        );
+
+  final String customData;
+
+  final String value;
+
+  @override
+  List<Object?> get props => <Object?>[
+        id,
+        customData,
+        valueIdentifier,
+        startDate,
+        endDate,
+        value,
+      ];
+}
+
+@JsonSerializable()
+class CustomStep extends Step {
+  CustomStep({
+    required super.stepIdentifier,
+    super.isOptional = false,
+    super.buttonText = 'Next',
+    this.title = '',
+    this.text = '',
+    this.content = const SizedBox.shrink(),
+    required this.answerFormat,
+  });
+  @JsonKey(defaultValue: '')
+  final String title;
+  @JsonKey(defaultValue: '')
+  final String text;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final Widget content;
+  final AnswerFormat answerFormat;
+
+  factory CustomStep.fromJson(Map<String, dynamic> json) =>
+      _$CustomStepFromJson(json);
+  @override
+  Map<String, dynamic> toJson() => _$CustomStepToJson(this);
+
+  @override
+  Widget createView({required QuestionResult? questionResult}) {
+    return CustomAnswerView(
+      questionStep: this,
+      result: questionResult as CustomResult?,
+    );
+  }
+}
+
+class CustomAnswerView extends StatefulWidget {
+  const CustomAnswerView({super.key, required this.questionStep, this.result});
+  final CustomStep questionStep;
+  final CustomResult? result;
+
+  @override
+  State<CustomAnswerView> createState() => _CustomAnswerViewState();
+}
+
+class _CustomAnswerViewState extends State<CustomAnswerView> {
+  late String? _result;
+  @override
+  void initState() {
+    super.initState();
+    _result = 'Adarsh';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StepView(
+      step: widget.questionStep,
+      resultFunction: () => CustomResult(
+        id: widget.questionStep.stepIdentifier,
+        startDate: DateTime.now(),
+        endDate: DateTime.now(),
+        valueIdentifier: _result.toString(),
+        result: _result,
+        customData: 'some custom data',
+        value: 'some value',
+      ),
+      isValid: widget.questionStep.isOptional || _result != null,
+      title: widget.questionStep.title.isNotEmpty
+          ? Text(
+              widget.questionStep.title,
+              style: Theme.of(context).textTheme.displayMedium,
+              textAlign: TextAlign.center,
+            )
+          : widget.questionStep.content,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 14.0),
+            child: Text(
+              widget.questionStep.text,
+              style: Theme.of(context).textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
